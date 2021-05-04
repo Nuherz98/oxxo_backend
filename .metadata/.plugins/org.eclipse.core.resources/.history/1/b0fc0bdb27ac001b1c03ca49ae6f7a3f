@@ -1,0 +1,16 @@
+package mx.edu.itlp.controladores;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+
+
+@SuppressWarnings("unused")
+public class Mensaje {
+	@GetMapping("/devops")
+	public String mostrarhola() {
+		return "Hola DevOps";
+	}
+
+}
