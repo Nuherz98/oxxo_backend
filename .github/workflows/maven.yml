@@ -28,3 +28,4 @@ jobs:
       with:
          name: oxxo_backendclon
          path: target/oxxo_backend-0.0.1.jar
+         
