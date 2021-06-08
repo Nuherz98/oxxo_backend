@@ -79,4 +79,17 @@ public class Tickets_renglonesWS {
 		}
 		return new ResponseEntity<tickets>(HttpStatus.OK);	
 	}
+
+
+@GetMapping("/importe_por_cajero/{id}")
+	public ResponseEntity<?> buscando_importes(@PathVariable int id) {
+		List<Ticket_renglones_importe> resultado;
+		try {
+			resultado = servicio.buscando_importes(id);
+		} catch (DataAccessException e) {
+			System.out.println(e);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<List<Ticket_renglones_importe>>(resultado, HttpStatus.OK);
+	}
 }
