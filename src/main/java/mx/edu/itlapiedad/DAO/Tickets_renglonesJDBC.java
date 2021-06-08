@@ -1,5 +1,6 @@
 package mx.edu.itlapiedad.DAO;
 
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -17,86 +18,83 @@ import mx.edu.itlapiedad.models.Tickets_renglones;
 import mx.edu.itlapiedad.models.Ticket_renglones_importe;
 
 @Repository
-public class Tickets_renglonesJDBC implements Tickets_renglonesDAO {
+public class Tickets_renglonesJDBC implements Tickets_renglonesDAO{
+	
 	@Autowired
 	JdbcTemplate conexion;
+	
+	@Override
+	public List<Tickets_renglones> consultarTickets_renglones() {
+		String sql_query = "SELECT * FROM ticket_renglones";
+		return conexion.query(sql_query, new RowMapper<Tickets_renglones>() {
+			public Tickets_renglones mapRow(ResultSet rs,int rowNum) throws SQLException {
+				Tickets_renglones TR = new Tickets_renglones();
+				TR.setId(rs.getInt("id"));
+				TR.setTicket_id(rs.getInt("TICKET_id"));
+				TR.setProducto_id(rs.getInt("PRODUCTO_id"));
+				TR.setCantidad(rs.getInt("cantidad"));
+				TR.setPrecio(rs.getFloat("precio"));
+				TR.setImporte(rs.getFloat("importe"));
+				return TR;
+				
+			}
 
+			
+		});
+	}
+	
 	@Override
 	public Tickets_renglones buscar(int id) {
 		String sql_query = "SELECT * FROM ticket_renglones WHERE id=?";
 		return conexion.queryForObject(sql_query, new RowMapper<Tickets_renglones>() {
 			public Tickets_renglones mapRow(ResultSet rs, int rowNum) throws SQLException {
-				Tickets_renglones ticket_renglones = new Tickets_renglones();
-				ticket_renglones.setId(rs.getInt("id"));
-				ticket_renglones.setTicket_id(rs.getInt("TICKET_id"));
-				ticket_renglones.setProducto_id(rs.getInt("PRODUCTO_id"));
-				ticket_renglones.setCantidad(rs.getInt("cantidad"));
-				ticket_renglones.setPrecio(rs.getFloat("precio"));
-				ticket_renglones.setImporte(rs.getFloat("importe"));
-				return ticket_renglones;
+				Tickets_renglones TR = new Tickets_renglones();
+				TR.setId(rs.getInt("id"));
+				TR.setTicket_id(rs.getInt("TICKET_id"));
+				TR.setProducto_id(rs.getInt("PRODUCTO_id"));
+				TR.setCantidad(rs.getInt("cantidad"));
+				TR.setPrecio(rs.getFloat("precio"));
+				TR.setImporte(rs.getFloat("importe"));
+				return TR;
 			}
-
-		}, id);
+			
+		},id);
 	}
-
+	
 	@Override
-	public Tickets_renglones insertar(Tickets_renglones ticket_renglones) {
-
-		SimpleJdbcInsert insert = new SimpleJdbcInsert(conexion).withTableName("ticket_renglones")
-				.usingColumns("cantidad", "precio", "TICKET_id","PRODUCTO_id").usingGeneratedKeyColumns("id");
-		Map<String, Object> datos = new HashMap<>();
-		datos.put("cantidad", ticket_renglones.getCantidad());
-		datos.put("precio", ticket_renglones.getPrecio());
-	//	datos.put("importe", ticket_renglones.getImporte());
-		datos.put("TICKET_id", ticket_renglones.getTicket_id());
-		datos.put("PRODUCTO_id", ticket_renglones.getProducto_id());
-		
-		Number id = insert.executeAndReturnKey(datos);
-		ticket_renglones.setId(id.intValue());
-		return ticket_renglones;
+	public Tickets_renglones insertar(Tickets_renglones Tickets_renglones) {
+		SimpleJdbcInsert insert=new SimpleJdbcInsert(conexion).withTableName("ticket_renglones")
+				.usingColumns("TICKET_id","PRODUCTO_id","cantidad","precio")
+				.usingGeneratedKeyColumns("id");
+		Map<String,Object> datos = new HashMap<>();
+	datos.put("TICKET_id", Tickets_renglones.getTicket_id());
+	datos.put("PRODUCTO_id", Tickets_renglones.getProducto_id());
+	datos.put("cantidad", Tickets_renglones.getCantidad());
+	datos.put("precio", Tickets_renglones.getPrecio());
+	
+		Number id=insert.executeAndReturnKey(datos);
+		Tickets_renglones.setId(id.intValue());
+		return Tickets_renglones;
 	}
-
+	
+	
 	@Override
-	public List<Tickets_renglones> consultarTickets_renglones() {
-		// TODO Auto-generated method stub
-		String sql_query = "SELECT * FROM ticket_renglones";
-		return conexion.query(sql_query, new RowMapper<Tickets_renglones>() {
-			public Tickets_renglones mapRow(ResultSet rs, int rowNum) throws SQLException {
-				Tickets_renglones ticket_renglones = new Tickets_renglones();
-				ticket_renglones.setId(rs.getInt("id"));
-				ticket_renglones.setTicket_id(rs.getInt("TICKET_id"));
-				ticket_renglones.setProducto_id(rs.getInt("PRODUCTO_id"));
-				ticket_renglones.setCantidad(rs.getInt("cantidad"));
-				ticket_renglones.setPrecio(rs.getFloat("precio"));
-				ticket_renglones.setImporte(rs.getFloat("importe"));
-				return ticket_renglones;
-
-			}
-
-		});
-	}
-
-	@Override
-	public void actualizar(Tickets_renglones ticket_renglones) {
-		String sql_update = "UPDATE ticket_renglones SET cantidad = ?, precio = ?, TICKET_id=?, PRODUCTO_id=? " + " WHERE id = ?";
+	public void actualizar(Tickets_renglones Tickets_renglones) {
+		String sql_update = "UPDATE ticket_renglones SET TICKET_id=?, PRODUCTO_id=?,"
+				+ "cantidad=?, precio=? WHERE id=?";
 		conexion.update(sql_update,
-				ticket_renglones.getCantidad(), 
-				ticket_renglones.getPrecio(),
-			//	ticket_renglones.getImporte(), 
-				ticket_renglones.getTicket_id(), 
-				ticket_renglones.getProducto_id(), 
-				ticket_renglones.getId());
-		
-		
-
+				Tickets_renglones.getTicket_id(),
+				Tickets_renglones.getProducto_id(),
+				Tickets_renglones.getCantidad(),
+				Tickets_renglones.getPrecio(),
+				Tickets_renglones.getId());
 	}
-
+	
 	@Override
 	public void eliminar(int id) {
-		String sql_update="Delete ticket_renglones WHERE id=?";
+		String sql_update="delete from ticket_renglones WHERE id=?";
 		conexion.update(sql_update,id);
 	}
-
 	@Override
 	public List<Ticket_renglones_importe> buscar_importe_cajero(int id) {
 		
@@ -113,7 +111,7 @@ public class Tickets_renglonesJDBC implements Tickets_renglonesDAO {
 
 		}, id);
 	}
-
+	
 	@Override
 	public List<Ticket_renglones_importe> buscar_importe_cajero_fecha(int id,Timestamp fecha_hora) {
 		
@@ -130,4 +128,9 @@ public class Tickets_renglonesJDBC implements Tickets_renglonesDAO {
 
 		}, id,fecha_hora);
 	}
+
+	
+
+
 }
+
