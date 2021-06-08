@@ -1,5 +1,6 @@
 package mx.edu.itlapiedad.controladores;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,96 +14,108 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import mx.edu.itlapiedad.models.Tickets_renglones;
-import mx.edu.itlapiedad.models.tickets;
-import mx.edu.itlapiedad.services.Tickets_renglonesService;
+
+import mx.edu.itlapiedad.models.Ticket_renglones;
 import mx.edu.itlapiedad.models.Ticket_renglones_importe;
+import mx.edu.itlapiedad.services.Tickets_renglones.Ticket_renglonesService;
 
 @RestController
-@RequestMapping("/devops/Tickets_renglones")
-public class Tickets_renglonesWS {
-	
+@RequestMapping("/devops/ticket_renglones")
+
+public class Ticket_renglonesWS {
+
 	@Autowired
-	Tickets_renglonesService servicio;
+	Ticket_renglonesService servicio;
+
+	@GetMapping("/{id}")
+	public ResponseEntity<?> buscar(@PathVariable int id) {
+		Ticket_renglones resultado;
+		try {
+			resultado = servicio.buscar(id);
+		} catch (DataAccessException e) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<Ticket_renglones>(resultado, HttpStatus.OK);
+	}
+
+	@PostMapping()
+	public ResponseEntity<?> insertar(@RequestBody Ticket_renglones ticket_renglones) {
+		Ticket_renglones resultado;
+		try {
+			resultado = servicio.insertar(ticket_renglones);
+
+		} catch (DataAccessException e) {
+			System.out.println(e);
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
+			
+		}
+		return new ResponseEntity<Ticket_renglones>(resultado, HttpStatus.CREATED);
+
+	}
 
 	@GetMapping()
-	public ResponseEntity<?> consultarTickets_renglones(){
-		List<Tickets_renglones> resultado;
+	public ResponseEntity<?> consultarTicket_renglones() {
+		List<Ticket_renglones> resultado;
 		try {
-			resultado = servicio.consultarTickets_renglones();
-		}catch (DataAccessException e) {
-			System.out.println(e);
+			resultado = servicio.consultarTicket_renglones();
+		} catch (DataAccessException e) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
-		return new ResponseEntity<List<Tickets_renglones>>(resultado,HttpStatus.OK);
+		return new ResponseEntity<List<Ticket_renglones>>(resultado, HttpStatus.OK);
 	}
-	
-	@GetMapping("/{id}")
-	public ResponseEntity<?> buscar(@PathVariable int id){
-		Tickets_renglones resultado;
-		try {
-			resultado=servicio.buscar(id);
-		} catch (DataAccessException e) {
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		}
-		return new ResponseEntity<Tickets_renglones>(resultado,HttpStatus.OK);
-	}
-	
-	@PostMapping("")
-	public ResponseEntity<?>insertar(@RequestBody Tickets_renglones Tickets_renglones){
-		Tickets_renglones resultado;
-	try {
-		resultado=servicio.insertar(Tickets_renglones);
-	} catch (DataAccessException e) {
-		return new ResponseEntity<>(HttpStatus.CONFLICT);
-	}	
-		return new ResponseEntity<Tickets_renglones>(resultado,HttpStatus.CREATED);
-	}
-	
-	
+
 	@PutMapping()
-	public ResponseEntity<?> actualizar(@RequestBody Tickets_renglones Tickets_renglones){
-	try {
-			servicio.actualizar(Tickets_renglones);
+	public ResponseEntity<?> actualizar(@RequestBody Ticket_renglones ticket_renglones) {
+		try {
+			servicio.actualizar(ticket_renglones);
 		} catch (DataAccessException e) {
-		return new ResponseEntity<>(HttpStatus.CONFLICT);
+			System.out.println(e);
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		}
 		return new ResponseEntity<>(HttpStatus.CREATED);
-		}
-	
+	}
+
+//metodo de eliminar por id
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?>eliminar(@PathVariable int id){
+	public ResponseEntity<?> eliminarProducto(@PathVariable int id) {
+
 		try {
 			servicio.eliminar(id);
-		}catch(DataAccessException e) {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		}
-		return new ResponseEntity<tickets>(HttpStatus.OK);	
-	}
-
-
-@GetMapping("/importe_por_cajero/{id}")
-	public ResponseEntity<?> buscando_importes(@PathVariable int id) {
-		List<Ticket_renglones_importe> resultado;
-		try {
-			resultado = servicio.buscando_importes(id);
 		} catch (DataAccessException e) {
-			System.out.println(e);
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		}
-		return new ResponseEntity<List<Ticket_renglones_importe>>(resultado, HttpStatus.OK);	
-	}
 
-@GetMapping("/importe_cajero/{id}/fecha")
-	public ResponseEntity<?> buscando_importes_fechas(@PathVariable int id, @RequestParam Timestamp fecha_hora) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+		}
+
+		return new ResponseEntity<Ticket_renglones>(HttpStatus.OK);
+
+	}
+	
+	@GetMapping("/importe_cajero/{id}")
+	public ResponseEntity<?> buscar_importe_cajero(@PathVariable int id) {
 		List<Ticket_renglones_importe> resultado;
 		try {
-			resultado = servicio.buscando_importes_fechas(id,fecha_hora);
+			resultado = servicio.buscar_importe_cajero(id);
 		} catch (DataAccessException e) {
 			System.out.println(e);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<List<Ticket_renglones_importe>>(resultado, HttpStatus.OK);
 	}
+	
+	@GetMapping("/importe_cajero/{id}/fecha")
+	public ResponseEntity<?> buscar_importe_cajero_fecha(@PathVariable int id, @RequestParam Timestamp fecha_hora) {
+		List<Ticket_renglones_importe> resultado;
+		try {
+			resultado = servicio.buscar_importe_cajero_fecha(id,fecha_hora);
+		} catch (DataAccessException e) {
+			System.out.println(e);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<List<Ticket_renglones_importe>>(resultado, HttpStatus.OK);
+	}
+
+
 }
