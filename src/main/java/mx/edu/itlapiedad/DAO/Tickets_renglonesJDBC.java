@@ -28,12 +28,11 @@ public class Tickets_renglonesJDBC implements Tickets_renglonesDAO {
 			public Tickets_renglones mapRow(ResultSet rs, int rowNum) throws SQLException {
 				Tickets_renglones ticket_renglones = new Tickets_renglones();
 				ticket_renglones.setId(rs.getInt("id"));
-				ticket_renglones.setTICKET_id(rs.getInt("TICKET_id"));
-				ticket_renglones.setPRODUCTO_id(rs.getInt("PRODUCTO_id"));
+				ticket_renglones.setTicket_id(rs.getInt("TICKET_id"));
+				ticket_renglones.setProducto_id(rs.getInt("PRODUCTO_id"));
 				ticket_renglones.setCantidad(rs.getInt("cantidad"));
 				ticket_renglones.setPrecio(rs.getFloat("precio"));
 				ticket_renglones.setImporte(rs.getFloat("importe"));
-				ticket_renglones.setActivo(rs.getInt("activo"));
 				return ticket_renglones;
 			}
 
@@ -41,7 +40,7 @@ public class Tickets_renglonesJDBC implements Tickets_renglonesDAO {
 	}
 
 	@Override
-	public Ticket_renglones insertar(Ticket_renglones ticket_renglones) {
+	public Tickets_renglones insertar(Tickets_renglones ticket_renglones) {
 
 		SimpleJdbcInsert insert = new SimpleJdbcInsert(conexion).withTableName("ticket_renglones")
 				.usingColumns("cantidad", "precio", "TICKET_id","PRODUCTO_id").usingGeneratedKeyColumns("id");
@@ -49,29 +48,27 @@ public class Tickets_renglonesJDBC implements Tickets_renglonesDAO {
 		datos.put("cantidad", ticket_renglones.getCantidad());
 		datos.put("precio", ticket_renglones.getPrecio());
 	//	datos.put("importe", ticket_renglones.getImporte());
-		datos.put("TICKET_id", ticket_renglones.getTICKET_id());
-		datos.put("PRODUCTO_id", ticket_renglones.getPRODUCTO_id());
+		datos.put("TICKET_id", ticket_renglones.getTicket_id());
+		datos.put("PRODUCTO_id", ticket_renglones.getProducto_id());
 		
 		Number id = insert.executeAndReturnKey(datos);
 		ticket_renglones.setId(id.intValue());
-		ticket_renglones.setActivo(1);
 		return ticket_renglones;
 	}
 
 	@Override
-	public List<Tickets_renglones> consultarTicket_renglones() {
+	public List<Tickets_renglones> consultarTickets_renglones() {
 		// TODO Auto-generated method stub
-		String sql_query = "SELECT * FROM ticket_renglones where activo=1";
+		String sql_query = "SELECT * FROM ticket_renglones";
 		return conexion.query(sql_query, new RowMapper<Tickets_renglones>() {
 			public Tickets_renglones mapRow(ResultSet rs, int rowNum) throws SQLException {
 				Tickets_renglones ticket_renglones = new Tickets_renglones();
 				ticket_renglones.setId(rs.getInt("id"));
-				ticket_renglones.setTICKET_id(rs.getInt("TICKET_id"));
-				ticket_renglones.setPRODUCTO_id(rs.getInt("PRODUCTO_id"));
+				ticket_renglones.setTicket_id(rs.getInt("TICKET_id"));
+				ticket_renglones.setProducto_id(rs.getInt("PRODUCTO_id"));
 				ticket_renglones.setCantidad(rs.getInt("cantidad"));
 				ticket_renglones.setPrecio(rs.getFloat("precio"));
 				ticket_renglones.setImporte(rs.getFloat("importe"));
-				ticket_renglones.setActivo(rs.getInt("activo"));
 				return ticket_renglones;
 
 			}
@@ -86,8 +83,8 @@ public class Tickets_renglonesJDBC implements Tickets_renglonesDAO {
 				ticket_renglones.getCantidad(), 
 				ticket_renglones.getPrecio(),
 			//	ticket_renglones.getImporte(), 
-				ticket_renglones.getTICKET_id(), 
-				ticket_renglones.getPRODUCTO_id(), 
+				ticket_renglones.getTicket_id(), 
+				ticket_renglones.getProducto_id(), 
 				ticket_renglones.getId());
 		
 		
@@ -96,7 +93,7 @@ public class Tickets_renglonesJDBC implements Tickets_renglonesDAO {
 
 	@Override
 	public void eliminar(int id) {
-		String sql_update="UPDATE ticket_renglones SET activo=0 WHERE id=?";
+		String sql_update="Delete ticket_renglones WHERE id=?";
 		conexion.update(sql_update,id);
 	}
 
@@ -132,17 +129,5 @@ public class Tickets_renglonesJDBC implements Tickets_renglonesDAO {
 			}
 
 		}, id,fecha_hora);
-	}
-
-	@Override
-	public List<Tickets_renglones> consultarTickets_renglones() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Tickets_renglones insertar(Tickets_renglones Tickets_renglones) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

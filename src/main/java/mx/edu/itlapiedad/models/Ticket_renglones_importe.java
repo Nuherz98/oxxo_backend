@@ -1,7 +1,6 @@
 package mx.edu.itlapiedad.models;
 
 public class Ticket_renglones_importe {
-
 	private float importe;
 
 	public float getImporte() {

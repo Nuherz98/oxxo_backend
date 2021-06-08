@@ -10,11 +10,11 @@ public interface Tickets_renglonesDAO {
 
 	Tickets_renglones buscar(int id);
 
-	Tickets_renglones insertar(Tickets_renglones tickets_renglones);
+	Tickets_renglones insertar(Tickets_renglones ticket_renglones);
 
 	List<Tickets_renglones> consultarTickets_renglones();
 
-	void actualizar(Tickets_renglones tickets_renglones);
+	void actualizar(Tickets_renglones ticket_renglones);
 
 	void eliminar(int id);
 

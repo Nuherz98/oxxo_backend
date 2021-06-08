@@ -23,9 +23,9 @@ public class Tickets_renglonesLogic implements Tickets_renglonesService {
 	}
 
 	@Override
-	public Tickets_renglones insertar(Tickets_renglones tickets_renglones) {
+	public Tickets_renglones insertar(Tickets_renglones ticket_renglones) {
 		// TODO Auto-generated method stub
-		return repositorio.insertar(tickets_renglones);
+		return repositorio.insertar(ticket_renglones);
 	}
 
 	@Override
@@ -56,30 +56,6 @@ repositorio.eliminar(id);
 	public List<Ticket_renglones_importe> buscar_importe_cajero_fecha(int id, Timestamp fecha_hora) {
 		// TODO Auto-generated method stub
 		return repositorio.buscar_importe_cajero_fecha(id,fecha_hora);
-	}
-
-	@Override
-	public List<Tickets_renglones> consultarTickets_renglones() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Tickets_renglones buscar(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Tickets_renglones insertar(Tickets_renglones Tickets_renglones) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void actualizar(Tickets_renglones Tickets_renglones) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	

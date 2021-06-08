@@ -21,6 +21,7 @@ import mx.edu.itlapiedad.models.Tickets_renglones;
 import mx.edu.itlapiedad.models.Ticket_renglones_importe;
 import mx.edu.itlapiedad.services.Tickets_renglonesService;
 
+
 @RestController
 @RequestMapping("/devops/ticket_renglones")
 
@@ -41,10 +42,10 @@ public class Tickets_renglonesWS {
 	}
 
 	@PostMapping()
-	public ResponseEntity<?> insertar(@RequestBody Tickets_renglones tickets_renglones) {
+	public ResponseEntity<?> insertar(@RequestBody Tickets_renglones ticket_renglones) {
 		Tickets_renglones resultado;
 		try {
-			resultado = servicio.insertar(tickets_renglones);
+			resultado = servicio.insertar(ticket_renglones);
 
 		} catch (DataAccessException e) {
 			System.out.println(e);
@@ -56,7 +57,7 @@ public class Tickets_renglonesWS {
 	}
 
 	@GetMapping()
-	public ResponseEntity<?> consultarTickets_renglones() {
+	public ResponseEntity<?> consultarTicket_renglones() {
 		List<Tickets_renglones> resultado;
 		try {
 			resultado = servicio.consultarTickets_renglones();
@@ -67,15 +68,16 @@ public class Tickets_renglonesWS {
 	}
 
 	@PutMapping()
-	public ResponseEntity<?> actualizar(@RequestBody Tickets_renglones tickets_renglones) {
+	public ResponseEntity<?> actualizar(@RequestBody Tickets_renglones ticket_renglones) {
 		try {
-			servicio.actualizar(tickets_renglones);
+			servicio.actualizar(ticket_renglones);
 		} catch (DataAccessException e) {
 			System.out.println(e);
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		}
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
+
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> eliminarProducto(@PathVariable int id) {
@@ -117,4 +119,4 @@ public class Tickets_renglonesWS {
 	}
 
 
-}}
+}
