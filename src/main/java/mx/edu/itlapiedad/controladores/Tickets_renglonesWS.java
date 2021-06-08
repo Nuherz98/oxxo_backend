@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import mx.edu.itlapiedad.models.Tickets_renglones;
 import mx.edu.itlapiedad.models.tickets;
 import mx.edu.itlapiedad.services.Tickets_renglonesService;
-import mx.edu.itlapiedad.services.Ticket_renglones_importe;
+import mx.edu.itlapiedad.models.Ticket_renglones_importe;
 
 @RestController
 @RequestMapping("/devops/Tickets_renglones")
