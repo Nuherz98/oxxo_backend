@@ -11,6 +11,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
+
+import jdk.jfr.Timestamp;
 import mx.edu.itlapiedad.models.Ticket_renglones_importe;
 
 import mx.edu.itlapiedad.models.Tickets_renglones;
@@ -109,5 +111,21 @@ public class Tickets_renglonesJDBC implements Tickets_renglonesDAO{
 			}
 
 		}, id);
+	}
+	@Override
+	public List<Ticket_renglones_importe> buscando_importes_fechas(int id,Timestamp fecha_hora) {
+		
+		String sql_query = "SELECT  sum(importe) as importe FROM ticket_renglones  JOIN tickets ON ticket_renglones.TICKET_id = tickets.id JOIN cajeros  ON cajeros.id=tickets.CAJERO_id  WHERE  cajeros.id=? and fecha_hora=?;";
+		return conexion.query(sql_query, new RowMapper<Ticket_renglones_importe>() {
+			public Ticket_renglones_importe mapRow(ResultSet rs, int rowNum) throws SQLException {
+				Ticket_renglones_importe ticket_renglones = new Ticket_renglones_importe();
+				ticket_renglones.setImporte(rs.getFloat("importe"));
+
+				return ticket_renglones;
+
+			
+			}
+
+		}, id,fecha_hora);
 	}
 	}
