@@ -14,28 +14,28 @@ import mx.edu.itlapiedad.models.Ticket_renglones_importe;
 @Service
 public class Tickets_renglonesLogic implements Tickets_renglonesService {
 	@Autowired
-	Ticket_renglonesDAO repositorio;
+	Tickets_renglonesDAO repositorio;
 
 	@Override
-	public Ticket_renglones buscar(int id) {
+	public Tickets_renglones buscar(int id) {
 		// TODO Auto-generated method stub
 		return repositorio.buscar(id);
 	}
 
 	@Override
-	public Ticket_renglones insertar(Ticket_renglones ticket_renglones) {
+	public Tickets_renglones insertar(Tickets_renglones tickets_renglones) {
 		// TODO Auto-generated method stub
-		return repositorio.insertar(ticket_renglones);
+		return repositorio.insertar(tickets_renglones);
 	}
 
 	@Override
-	public List<Ticket_renglones> consultarTicket_renglones() {
+	public List<Tickets_renglones> consultarTickets_renglones() {
 		// TODO Auto-generated method stub
-		return repositorio.consultarTicket_renglones();
+		return repositorio.consultarTickets_renglones();
 	}
 
 	@Override
-	public void actualizar(Ticket_renglones ticket_renglones) {
+	public void actualizar(Tickets_renglones ticket_renglones) {
 		// TODO Auto-generated method stub
 repositorio.actualizar(ticket_renglones);
 	}
